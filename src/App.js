@@ -8,7 +8,7 @@ import Profile from "./Pages/Profile/profile";
 import VideoUpload from "./Pages/VideoUpload/videoUpload";
 import SignUp from "./Pages/SignUp/signUp";
 import Reels from "./Component/Reels/reels";
-
+import Footer from './Component/Footer/footer';
 
 function App() {
   const [sideNavbar, setSideNavbar] = useState(false);
@@ -22,13 +22,14 @@ function App() {
       <Navbar setSideNavbarFunc={setSideNavbarFunc} sideNavbar={sideNavbar} />
       <Routes>
         <Route path="/" element={<Home sideNavbar={sideNavbar} />} />
-        <Route path="/video/:id" element={<Video />} />  {/* ✅ only this one */}
+        <Route path="/video/:id" element={<Video />} />
         <Route path="/user/:id" element={<Profile sideNavbar={sideNavbar} />} />
         <Route path="/:id/upload" element={<VideoUpload />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reels" element={<Reels />} />
         <Route path="/profile/:username" element={<Profile sideNavbar={sideNavbar} />} />
       </Routes>
+      <Footer />   {/* ✅ Added here */}
     </div>
   );
 }

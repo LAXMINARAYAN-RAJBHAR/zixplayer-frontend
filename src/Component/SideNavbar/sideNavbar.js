@@ -81,6 +81,7 @@ const SideNavbar = ({sideNavbar}) => {
           <img
             className="home_sideNavbar_ImgLogo"
             src="https://tse4.mm.bing.net/th/id/OIP.Auy5e_yPpkpidVF_ZRz7aQAAAA?w=404&h=316&rs=1&pid=ImgDetMain&o=7&rm=3"
+            alt="Aaj Tak"
           />
           <div className="home_sideNavbarTopOptionTitle">Aaj Tak</div>
         </div>
@@ -89,6 +90,7 @@ const SideNavbar = ({sideNavbar}) => {
           <img
             className="home_sideNavbar_ImgLogo"
             src="https://tse1.mm.bing.net/th/id/OIP.At5eXfjQ0jLiO7tRFBjI_QAAAA?rs=1&pid=ImgDetMain&o=7&rm=3"
+            alt="The LallanTop"
           />
           <div className="home_sideNavbarTopOptionTitle">The LallanTop</div>
         </div>
@@ -97,6 +99,7 @@ const SideNavbar = ({sideNavbar}) => {
           <img
             className="home_sideNavbar_ImgLogo"
             src="https://logodix.com/logo/2131933.jpg"
+            alt="NDTV India"
           />
           <div className="home_sideNavbarTopOptionTitle">NDTV India</div>
         </div>

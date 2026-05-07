@@ -1,0 +1,13 @@
+.footer {
+  text-align: center;
+  padding: 1px;
+  background-color: #0f0f0f;
+  color: #aaaaaa;
+  font-size: 13px;
+  margin-top: auto;
+}
+
+.footer_dev {
+  color: white;
+  font-weight: bold;
+}

@@ -52,7 +52,8 @@ const SignUp = () => {
             <div className="image_upload_signup">
                     <input type='file' onChange={(e)=>uploadImage(e)} />
             <div className="image_upload_signup_div">
-                <img className='image_default_signup' src={uploadedImageUrl} />
+                <img className='image_default_signup' src={uploadedImageUrl} 
+                alt="Profile Preview" />
                 </div>    
                     </div>
 
