@@ -46,8 +46,8 @@ const Navbar = ({ setSideNavbarFunc, sideNavbar }) => {
       <div className="navbar-left">
         <div className="navbarHamberger" onClick={sideNavbarFunc}>
           <ListIcon sx={{ color: "white" }} />
-        
         </div>
+        
         <Link to="/" className="navbar-logo-link">
           <img src={MyLogo} alt="App Logo" className="mylogo" />
           <span
