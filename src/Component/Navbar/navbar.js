@@ -46,10 +46,14 @@ const Navbar = ({ setSideNavbarFunc, sideNavbar }) => {
       <div className="navbar-left">
         <div className="navbarHamberger" onClick={sideNavbarFunc}>
           <ListIcon sx={{ color: "white" }} />
+        
         </div>
         <Link to="/" className="navbar-logo-link">
           <img src={MyLogo} alt="App Logo" className="mylogo" />
-          <span className="logoText">
+          <span
+            className="logoText"
+            onClick={() => window.location.reload()} // Add this
+          >
             {"RollamRoll".split("").map((char, i) => (
               <span
                 key={i}
