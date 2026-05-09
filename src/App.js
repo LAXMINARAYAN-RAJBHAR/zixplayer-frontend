@@ -8,15 +8,21 @@ import Profile from "./Pages/Profile/profile";
 import VideoUpload from "./Pages/VideoUpload/videoUpload";
 import SignUp from "./Pages/SignUp/signUp";
 import Reels from "./Component/Reels/reels";
-import Footer from './Component/Footer/footer';
+import Footer from "./Component/Footer/footer";
 import YouTubeSearch from "./Component/YouTubeSearch/youTubeSearch";
+import SearchResults from "./Component/SearchResults/searchResults";
+import { useLocation } from "react-router-dom";
 
-function App() {
+// ADD this component above App function
+function AppContent() {
   const [sideNavbar, setSideNavbar] = useState(false);
+  const location = useLocation();
 
   const setSideNavbarFunc = (value) => {
     setSideNavbar(value);
   };
+
+  const hideFooter = ["/youtube", "/reels"].includes(location.pathname);
 
   return (
     <div className="App">
@@ -29,11 +35,17 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reels" element={<Reels />} />
         <Route path="/profile/:username" element={<Profile sideNavbar={sideNavbar} />} />
+        <Route path="/search" element={<SearchResults />} />
         <Route path="/youtube" element={<YouTubeSearch />} />
       </Routes>
-      <Footer />   {/* ✅ Added here */}
+      {!hideFooter && <Footer />}
     </div>
   );
+}
+
+// KEEP App function just as the router wrapper
+function App() {
+  return <AppContent />;
 }
 
 export default App;

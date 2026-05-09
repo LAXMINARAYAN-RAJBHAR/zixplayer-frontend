@@ -39,15 +39,14 @@ const YouTubeSearch = () => {
     { id: 2, user: "Priya", text: "Loved this content!", time: "1 day ago", likes: 12 },
     { id: 3, user: "Amit", text: "Very informative, thanks!", time: "5 hours ago", likes: 5 },
   ]);
+
   const location = useLocation();
   const autoplayRef = React.useRef(autoplay);
 
-  // ✅ Keep ref in sync with state
   useEffect(() => {
     autoplayRef.current = autoplay;
   }, [autoplay]);
 
-  // ✅ Listen for video end
   useEffect(() => {
     if (!selectedVideo) return;
     const handleMessage = (event) => {
@@ -71,19 +70,28 @@ const YouTubeSearch = () => {
     return () => window.removeEventListener("message", handleMessage);
   }, [selectedVideo, selectedVideoIndex, results]);
 
-  // ✅ Load on page visit with random query
+  // ✅ Add this new useEffect
+useEffect(() => {
+  const handleReload = () => {
+    const randomQuery = defaultQueries[Math.floor(Math.random() * defaultQueries.length)];
+    searchWithQuery(randomQuery, true);
+  };
+  window.addEventListener("youtube-reload", handleReload);
+  return () => window.removeEventListener("youtube-reload", handleReload);
+}, []);
+
+  // ✅ THIS IS THE KEY FIX — loads content on mount and on search
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const searchFromNav = params.get("search");
-    if (searchFromNav) {
-      setQuery(searchFromNav);
-      searchWithQuery(searchFromNav, true);
-    } else {
-      // ✅ Pick random query each time
-      const randomQuery = defaultQueries[Math.floor(Math.random() * defaultQueries.length)];
-      searchWithQuery(randomQuery, true);
-    }
-  }, [location.search]);
+  const params = new URLSearchParams(location.search);
+  const searchFromNav = params.get("search");
+  if (searchFromNav) {
+    setQuery(searchFromNav);
+    searchWithQuery(searchFromNav, true);
+  } else {
+    const randomQuery = defaultQueries[Math.floor(Math.random() * defaultQueries.length)];
+    searchWithQuery(randomQuery, true);
+  }
+}, [location.search, location.pathname, location.state]); // ✅ added location.state
 
   const searchWithQuery = async (q, forceRefresh = false) => {
     if (cache[q] && !forceRefresh) {
@@ -92,6 +100,7 @@ const YouTubeSearch = () => {
     }
     setLoading(true);
     setError("");
+    let allFailed = true; // ✅ ADD THIS
 
     for (let i = 0; i < API_KEYS.length; i++) {
       const keyIndex = (currentKeyIndex + i) % API_KEYS.length;
@@ -112,6 +121,7 @@ const YouTubeSearch = () => {
         currentKeyIndex = keyIndex;
         cache[q] = res.data.items;
         setResults(res.data.items);
+        allFailed = false; // ✅ ADD THIS
         setLoading(false);
         return;
       } catch (err) {
@@ -120,20 +130,21 @@ const YouTubeSearch = () => {
           continue;
         }
         setError(err.response?.data?.error?.message || "Something went wrong");
+        allFailed = false; // ✅ ADD THIS
         break;
       }
     }
+
+    // ✅ ADD THIS BLOCK
+    if (allFailed) {
+      setError("All API keys exhausted for today 😔 Please add fresh API keys or try again tomorrow.");
+    }
+
     setLoading(false);
   };
 
   return (
-    <div style={{ 
-  background: "#0f0f0f", 
-  minHeight: "100vh", 
-  paddingTop: "70px",
-  overflowX: "hidden",  // ← add this
-  width: "100%"          // ← and this
-}}>
+    <div style={{ background: "#0f0f0f", minHeight: "100vh", paddingTop: "70px", fontFamily: "Roboto, Arial, sans-serif" }}>
 
       {error && (
         <div style={{ background: "#ff4444", color: "white", padding: "12px 20px", margin: "10px 20px", borderRadius: "6px", fontSize: "14px" }}>
@@ -142,7 +153,7 @@ const YouTubeSearch = () => {
       )}
 
       {loading && (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "16px", padding: "20px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px", padding: "20px" }}>
           {[...Array(8)].map((_, i) => (
             <div key={i} style={{ background: "#272727", borderRadius: "12px", overflow: "hidden" }}>
               <div style={{ width: "100%", paddingTop: "56.25%", background: "#3a3a3a", animation: "pulse 1.5s infinite" }} />
@@ -179,8 +190,6 @@ const YouTubeSearch = () => {
                 </div>
               </div>
 
-              {/* <span style={{ color: "#aaa", fontSize: "14px" }}>{selectedVideoIndex + 1} / {results.length}</span> */}
-
               <button
                 onClick={() => { const n = selectedVideoIndex + 1; if (n < results.length) { setSelectedVideo(results[n].id.videoId); setSelectedVideoIndex(n); setComment(""); } }}
                 disabled={selectedVideoIndex === results.length - 1}
@@ -198,16 +207,6 @@ const YouTubeSearch = () => {
                 style={{ borderRadius: "12px", border: "none", display: "block" }}
                 title="YouTube Player"
               />
-              <div className="floating-controls"
-                style={{ position: "absolute", bottom: "12px", left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.75)", borderRadius: "30px", padding: "8px 20px", display: "flex", alignItems: "center", gap: "16px", opacity: 0, transition: "opacity 0.3s", pointerEvents: "none", zIndex: 10, backdropFilter: "blur(6px)" }}>
-                <button onClick={() => { const p = selectedVideoIndex - 1; if (p >= 0) { setSelectedVideo(results[p].id.videoId); setSelectedVideoIndex(p); } }}
-                  style={{ background: "none", border: "none", color: "white", fontSize: "20px", cursor: "pointer" }}>⏮</button>
-                {/* <span style={{ color: "white", fontSize: "13px" }}>{selectedVideoIndex + 1} / {results.length}</span> */}
-                <button onClick={() => { const n = selectedVideoIndex + 1; if (n < results.length) { setSelectedVideo(results[n].id.videoId); setSelectedVideoIndex(n); } }}
-                  style={{ background: "none", border: "none", color: "white", fontSize: "20px", cursor: "pointer" }}>⏭</button>
-                <button onClick={() => document.getElementById("yt-iframe")?.requestFullscreen?.()}
-                  style={{ background: "none", border: "none", color: "white", fontSize: "18px", cursor: "pointer" }}>⛶</button>
-              </div>
             </div>
 
             {results[selectedVideoIndex] && (
@@ -310,13 +309,6 @@ const YouTubeSearch = () => {
               <div style={{ position: "relative", borderRadius: "12px", overflow: "hidden" }}>
                 <img src={item.snippet.thumbnails.medium.url} alt={item.snippet.title}
                   style={{ width: "100%", display: "block", aspectRatio: "16/9", objectFit: "cover" }} />
-                <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0)", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.2s" }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = "rgba(0,0,0,0.3)"}
-                  onMouseLeave={(e) => e.currentTarget.style.background = "rgba(0,0,0,0)"}>
-                  <div style={{ width: "50px", height: "50px", background: "rgba(255,0,0,0.9)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0, transition: "opacity 0.2s" }}
-                    onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
-                    onMouseLeave={(e) => e.currentTarget.style.opacity = "0"}>▶</div>
-                </div>
               </div>
               <div style={{ display: "flex", gap: "12px", padding: "12px 4px" }}>
                 <img src={`https://ui-avatars.com/api/?name=${item.snippet.channelTitle}&background=random&size=36`} alt="channel"
@@ -338,14 +330,12 @@ const YouTubeSearch = () => {
 
       {!loading && results.length === 0 && !error && (
         <p style={{ color: "#888", textAlign: "center", marginTop: "100px", fontSize: "16px" }}>
-          🔍 Search for any YouTube video using the search bar above
+          🔍 No videos found
         </p>
       )}
 
       <style>{`
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        #video-wrapper:hover .floating-controls { opacity: 1 !important; pointer-events: all !important; }
-        @media (display-mode: fullscreen) { .floating-controls { opacity: 1 !important; pointer-events: all !important; } }
       `}</style>
     </div>
   );
