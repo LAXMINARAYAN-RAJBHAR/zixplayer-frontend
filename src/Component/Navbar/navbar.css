@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Titan+One&display=swap'); /* ✅ Added Titan One */
 
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.6); }
+  70%  { box-shadow: 0 0 0 18px rgba(255, 0, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+}
+
 .navbar{
     height: 56px;
     box-sizing: border-box;
