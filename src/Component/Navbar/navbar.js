@@ -32,8 +32,8 @@ const getNotifStyle = (type) => {
   }
 };
 
-// ✅ Component
-const Navbar = ({ setSideNavbarFunc, sideNavbar, notifications, setNotifications }) => {
+// ✅ ONE Navbar component — clean props
+const Navbar = ({ currentUser, setSideNavbarFunc, sideNavbar, notifications, setNotifications }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -92,7 +92,7 @@ const Navbar = ({ setSideNavbarFunc, sideNavbar, notifications, setNotifications
   const sideNavbarFunc = () => setSideNavbarFunc(!sideNavbar);
 
   const handleprofile = () => {
-    navigate("/user/7697");
+    navigate(`/user/${currentUser}`);  // ✅ dynamic — uses currentUser prop
     setNavbarModal(false);
   };
 
@@ -279,10 +279,9 @@ const Navbar = ({ setSideNavbarFunc, sideNavbar, notifications, setNotifications
           <VideoCameraFrontIcon sx={{ fontSize: "30px", color: "white" }} />
         </span>
 
-        {/* ✅ NOTIFICATIONS — fully self-contained */}
+        {/* NOTIFICATIONS */}
         <div ref={notifRef} style={{ position: "relative" }}>
 
-          {/* Bell icon + badge */}
           <div
             onClick={() => setShowNotifications((prev) => !prev)}
             style={{ position: "relative", cursor: "pointer", display: "flex" }}
@@ -308,7 +307,6 @@ const Navbar = ({ setSideNavbarFunc, sideNavbar, notifications, setNotifications
             )}
           </div>
 
-          {/* Dropdown panel */}
           {showNotifications && (
             <div style={{
               position: "absolute", top: "42px", right: "-10px", width: "360px",
@@ -316,8 +314,6 @@ const Navbar = ({ setSideNavbarFunc, sideNavbar, notifications, setNotifications
               boxShadow: "0 8px 32px rgba(0,0,0,0.8)",
               zIndex: 99999, border: "1px solid #333", overflow: "hidden",
             }}>
-
-              {/* Header */}
               <div style={{
                 display: "flex", justifyContent: "space-between", alignItems: "center",
                 padding: "14px 16px", borderBottom: "1px solid #333",
@@ -335,7 +331,6 @@ const Navbar = ({ setSideNavbarFunc, sideNavbar, notifications, setNotifications
                 )}
               </div>
 
-              {/* List */}
               <div style={{ maxHeight: "400px", overflowY: "auto" }}>
                 {notifications.map((n) => {
                   const { color, icon } = getNotifStyle(n.type);
@@ -376,7 +371,6 @@ const Navbar = ({ setSideNavbarFunc, sideNavbar, notifications, setNotifications
                 })}
               </div>
 
-              {/* ✅ Footer — closes dropdown before navigating */}
               <div style={{ padding: "12px", textAlign: "center", borderTop: "1px solid #333" }}>
                 <span
                   style={{ color: "#3ea6ff", fontSize: "13px", cursor: "pointer" }}
@@ -388,7 +382,6 @@ const Navbar = ({ setSideNavbarFunc, sideNavbar, notifications, setNotifications
                   See all notifications
                 </span>
               </div>
-
             </div>
           )}
         </div>

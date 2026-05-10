@@ -1,37 +1,39 @@
+/* ✅ Fix profile wrapper */
 .profile {
-    display: flex;
-    width: 100%;
-    padding: 10px 13px 0 13px;
-    box-sizing: border-box;
-    background-color: black;
-    color: white;
-    position: relative; /* add this */
+  display: flex;
+  width: 100%;
+  min-height: calc(100vh - 56px); /* ← fills full height below navbar */
+  padding: 10px 13px 0 13px;
+  box-sizing: border-box;
+  background-color: black;
+  color: white;
+  position: relative;
 }
 
+/* ✅ Fix profile page — remove justify/align center (causes footer overlap) */
 .profile_page {
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
-    flex: 1;
-    margin-left: 270px; /* sidebar width */
-    color: white;
-    margin-top: 56px;
-    justify-content: center;
-    align-items: center;
-    transition: margin-left 0.3s ease; /* add this */
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  flex: 1;
+  margin-left: 270px;
+  color: white;
+  margin-top: 56px;
+  padding-bottom: 40px; /* ← breathing room above footer */
+  transition: margin-left 0.3s ease;
 }
 
+/* ✅ Same fix for inactive state */
 .profile_page_inactive {
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
-    flex: 1;
-    margin-left: 0px; /* add this */
-    color: white;
-    margin-top: 56px;
-    justify-content: center;
-    align-items: center;
-    transition: margin-left 0.3s ease; /* add this */
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  flex: 1;
+  margin-left: 0px;
+  color: white;
+  margin-top: 56px;
+  padding-bottom: 40px; /* ← breathing room above footer */
+  transition: margin-left 0.3s ease;
 }
 
 .profile_top_section{
@@ -75,18 +77,15 @@
     border-bottom: 1px solid rgb(153, 153, 153);   
 }
 
-.profileVideos{
-    display: flex;
-    gap: 10px;
-    height: 100vh;
-    flex-wrap: wrap;
-    margin-top: 20px;
+.profileVideos {
+  display: flex;
+  flex-wrap: wrap;      /* ← wraps to next line as more videos/reels are added */
+  gap: 16px;            /* ← consistent spacing between cards */
+  padding: 10px 0;
 }
-.profileVideo_block{
-    width: 210px;
-    color: white;
-    cursor: pointer;
-    text-decoration: none;
+.profileVideo_block {
+  width: 220px;         /* fixed card width */
+  flex-shrink: 0;
 }
 .profileVideo_block_thumbnail{
     width: 100%;

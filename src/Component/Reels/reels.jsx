@@ -710,7 +710,7 @@ const ReelItem = ({ reel }) => {
 
         <div className="reel_info">
           <div className="reel_user">
-            <Link to={`/profile/${reel.username}`}>
+            <Link to={`/user/${reel.username}`}>
               <img
                 src={reel.profilePic}
                 alt="profile"
@@ -718,7 +718,7 @@ const ReelItem = ({ reel }) => {
               />
             </Link>
             <Link
-              to={`/profile/${reel.username}`}
+              to={`/user/${reel.username}`}
               style={{ textDecoration: "none", color: "white" }}
             >
               <span className="reel_username">{reel.user}</span>
