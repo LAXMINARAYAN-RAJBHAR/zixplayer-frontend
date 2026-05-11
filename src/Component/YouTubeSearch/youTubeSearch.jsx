@@ -115,19 +115,20 @@ const YouTubeSearch = () => {
   }, [activeCategory]);
 
   useEffect(() => {
-    // Hash router puts query string inside the hash e.g. #/search?q=hindi%20movie
-    const hashSearch = window.location.hash.includes("?")
-      ? window.location.hash.split("?")[1]
-      : "";
-    const params = new URLSearchParams(hashSearch || location.search);
-    const searchFromNav = params.get("search") || params.get("q"); // support both ?search= and ?q=
+  const hashSearch = window.location.hash.includes("?")
+    ? window.location.hash.split("?")[1]
+    : "";
+  const params = new URLSearchParams(hashSearch || location.search);
+  const searchFromNav = params.get("search") || params.get("q");
 
-    if (searchFromNav) {
-      searchWithQuery(searchFromNav, true);
-    } else {
-      searchWithQuery(CATEGORIES[activeCategory].query, true);
-    }
-  }, [location.search, location.pathname, location.state]);
+  if (searchFromNav) {
+    setSelectedVideo(null);         // ← close any playing video
+    setSelectedVideoIndex(null);
+    searchWithQuery(searchFromNav, true);
+  } else {
+    searchWithQuery(CATEGORIES[activeCategory].query, true);
+  }
+}, [location.hash, location.search, location.pathname, location.state]); // ← add location.hash
 
   const searchWithQuery = async (q, forceRefresh = false) => {
     if (cache[q] && !forceRefresh) {
