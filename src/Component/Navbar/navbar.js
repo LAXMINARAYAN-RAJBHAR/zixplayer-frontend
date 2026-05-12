@@ -379,6 +379,23 @@ onBlur={() => {}}
 
       {/* RIGHT */}
       <div className="navbar-right">
+        
+        <Link to="/live-tv" style={{ textDecoration: "none" }}>
+  <div style={{ position: "relative", display: "inline-block" }}>
+    <span style={{ fontSize: "24px" }}>📺</span>
+    <span style={{
+      position: "absolute",
+      top: "-4px",
+      right: "-8px",
+      background: "#ff0000",
+      color: "white",
+      fontSize: "8px",
+      fontWeight: "800",
+      padding: "1px 4px",
+      borderRadius: "3px"
+    }}>LIVE</span>
+  </div>
+</Link>
         <span
           onClick={() =>
             navigate("/youtube", { state: { reload: Date.now() } })

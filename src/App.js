@@ -14,6 +14,7 @@ import SearchResults from "./Component/SearchResults/searchResults";
 import Notifications from "./Component/Notifications/notifications";
 import ComingSoon from "./Pages/ComingSoon/comingSoon";
 import ScrollToTop from "./ScrollToTop";
+import LiveTVPage from "./Pages/LiveTV/LiveTVPage";
 
 function App() {
   const location = useLocation();
@@ -62,6 +63,7 @@ function App() {
           <Route path="/liked-videos"  element={<ComingSoon title="Liked Videos" sideNavbar={sideNavbar} />} />
           <Route path="/your-clips"    element={<ComingSoon title="Your Clips"   sideNavbar={sideNavbar} />} />
           <Route path="/subscription"  element={<ComingSoon title="Subscription" sideNavbar={sideNavbar} />} />
+          <Route path="/live-tv" element={<LiveTVPage sideNavbar={sideNavbar} />} />
         </Routes>
       </div>
 
