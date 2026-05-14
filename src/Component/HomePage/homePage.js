@@ -552,9 +552,9 @@ const HomePage = ({ sideNavbar }) => {
   const options = [
     "All","DD News", "Kapil Sharma Show", "Hindi Movies", "Hindi News","English News","Film Criticisms","Twenty20 Cricket","Music","Live",
     "Mixes","Gaming","Debates","Coke Studio India","Democracy","Pakistani Dramas","Pakistani Movies",
-    "Comedy","Podcasts","Dramedy","Web Development","Hollywood Movies","Dubbed Hollywood Movies","Web Series",
+    "Comedy","Podcasts","Kapil Sharma Show","Dramedy","Web Development","Hollywood Movies","Dubbed Hollywood Movies","Web Series",
     "Professional Wrestling","Bhojpuri Cinema","Bhojpuri Songs","Superhero Movies","Astronomy",
-    "AI","History","Indian Music","Indian Movies","Recently Uploaded","Watched",
+    "AI","History","Kapil Sharma Show","Indian Music","Indian Movies","Recently Uploaded","Watched",
   ];
 
   useEffect(() => { fetchYouTubeByTopic(selectedOption); }, [selectedOption]);
